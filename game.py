@@ -402,19 +402,16 @@ class ChessGame:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 1))
             elif self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 1))
-        # TODO: Fix this
-        """
         if row > 0:
-            if self.board[(self.selected.piecePosition[0], str(int(self.selected.piecePosition[1]) - 1))] is None:
-                moves.append((self.selected.piecePosition[0], str(int(self.selected.piecePosition[1]) - 1)))
-            elif self.board[(self.selected.piecePosition[0], str(int(self.selected.piecePosition[1]) - 1))].pieceColor != self.selected.pieceColor:
-                moves.append((self.selected.piecePosition[0], str(int(self.selected.piecePosition[1]) - 1)))
+            if self.board[(self.selected.piecePosition[0], self.selected.piecePosition[1] - 1)] is None:
+                moves.append((self.selected.piecePosition[0], self.selected.piecePosition[1] - 1))
+            elif self.board[(self.selected.piecePosition[0], self.selected.piecePosition[1] - 1)].pieceColor != self.selected.pieceColor:
+                moves.append((self.selected.piecePosition[0], self.selected.piecePosition[1] - 1))
         if row < 7:
-            if self.board[(self.selected.piecePosition[0], str(int(self.selected.piecePosition[1]) + 1))] is None:
-                moves.append((self.selected.piecePosition[0], str(int(self.selected.piecePosition[1]) + 1)))
-            elif self.board[(self.selected.piecePosition[0], str(int(self.selected.piecePosition[1]) + 1))].pieceColor != self.selected.pieceColor:
-                moves.append((self.selected.piecePosition[0], str(int(self.selected.piecePosition[1]) + 1)))
-        """
+            if self.board[(self.selected.piecePosition[0], self.selected.piecePosition[1] + 1)] is None:
+                moves.append((self.selected.piecePosition[0], self.selected.piecePosition[1] + 1))
+            elif self.board[(self.selected.piecePosition[0], self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
+                moves.append((self.selected.piecePosition[0], self.selected.piecePosition[1] + 1))
         if col < 7 and row > 0:
             if self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 1)] is None:
                 moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 1))
@@ -431,7 +428,6 @@ class ChessGame:
             elif self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 1))
         # Castling
-        # TODO: Fix Queen side castling
         if self.selected.pieceColor == PieceColor.WHITE:
             # King side
             if (self.selected.piecePosition == ("E",1) and self.board["F",1] is None 
@@ -439,12 +435,11 @@ class ChessGame:
                 and self._castling[PieceColor.WHITE][PieceType.KING]):
                 moves.append(("G",1))
             # Queen side
-            if (self.selected.piecePosition == ("E",1) and self.board["F",1] is not None 
-                and self.board["G",1] is None and self.board["F",1].piecePosition == ("F",1) 
-                and self.board["E",1].piecePosition == ("E",1) and self.board["D",1] is None 
-                and self.board["C",1] is None and self.board["B",1] is None 
+            if (self.selected.piecePosition == ("E",1) and self.board["B",1] is None 
+                and self.board["C",1] is None 
+                and self.board["D",1] is None 
                 and self._castling[PieceColor.WHITE][PieceType.QUEEN]):
-                moves.append(("C",1)) 
+                moves.append(("C",1))
         if self.selected.pieceColor == PieceColor.BLACK:
             if (self.selected.piecePosition == ("E",8) 
                 and self.board["F",8] is None 
@@ -452,9 +447,9 @@ class ChessGame:
                 and self._castling[PieceColor.BLACK][PieceType.KING]):
                 moves.append(("G",8))
             if (self.selected.piecePosition == ("E",8) 
-                and self.board["F",8] is not None and self.board["G",8] is None 
-                and self.board["F",8].piecePosition == ("F",8) and self.board["E",8].piecePosition == ("E",8) 
-                and self.board["D",8] is None and self.board["C",8] is None and self.board["B",8] is None
+                and self.board["B",8] is None 
+                and self.board["C",8] is None 
+                and self.board["D",8] is None 
                 and self._castling[PieceColor.BLACK][PieceType.QUEEN]):
                 moves.append(("C",8))
         return moves
