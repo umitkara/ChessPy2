@@ -1,9 +1,8 @@
-from matplotlib.style import available
 import pygame
 from sympy import re
 from piece import Piece, PieceColor, PieceType
 from board import ChessBoard
-from typing import List, Tuple, Optional, Iterable, Dict, Any, Union, Callable
+from typing import List, Tuple, Optional, Dict
 
 
 class ChessGame:
@@ -387,47 +386,80 @@ class ChessGame:
         col = ord(self.selected.piecePosition[0].lower()) - ord("a")
         row = self.selected.piecePosition[1] - 1
         moves = []
-        if col > 0 and row > 0:
+        self._kingLeftMoves(col, row, moves)
+        self._kingBackMoves(row, moves)
+        self._kingFrontMoves(row, moves)
+        self._kingRightMoves(col, row, moves)
+        return self._castlingMoves(moves)
+
+    # King avaliable moves helper functions
+    ###
+    def _kingLeftMoves(self, col, row, moves) -> None:
+        """
+        Adds avaliable moves of the selected king to the list.
+        """
+        if col <= 0:
+            return
+        if row > 0:
             if self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] - 1)] is None:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] - 1))
             elif self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] - 1)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] - 1))
-        if col > 0:
-            if self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1])] is None:
-                moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1]))
-            elif self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1])].pieceColor != self.selected.pieceColor:
-                moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1]))
-        if col > 0 and row < 7:
+        if self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1])] is None:
+            moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1]))
+        elif self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1])].pieceColor != self.selected.pieceColor:
+            moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1]))
+        if row < 7:
             if self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 1)] is None:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 1))
             elif self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 1))
+
+    def _kingBackMoves(self, row, moves) -> None:
+        """
+        Adds avaliable moves of the selected king to the list.
+        """
         if row > 0:
             if self.board[(self.selected.piecePosition[0], self.selected.piecePosition[1] - 1)] is None:
                 moves.append((self.selected.piecePosition[0], self.selected.piecePosition[1] - 1))
             elif self.board[(self.selected.piecePosition[0], self.selected.piecePosition[1] - 1)].pieceColor != self.selected.pieceColor:
                 moves.append((self.selected.piecePosition[0], self.selected.piecePosition[1] - 1))
+
+    def _kingFrontMoves(self, row, moves) -> None:
+        """
+        Adds avaliable moves of the selected king to the list.
+        """
         if row < 7:
             if self.board[(self.selected.piecePosition[0], self.selected.piecePosition[1] + 1)] is None:
                 moves.append((self.selected.piecePosition[0], self.selected.piecePosition[1] + 1))
             elif self.board[(self.selected.piecePosition[0], self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
                 moves.append((self.selected.piecePosition[0], self.selected.piecePosition[1] + 1))
-        if col < 7 and row > 0:
+
+    def _kingRightMoves(self, col, row, moves) -> None:
+        """
+        Adds avaliable moves of the selected king to the list.
+        """
+        if col >= 7:
+            return
+        if row > 0:
             if self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 1)] is None:
                 moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 1))
             elif self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 1)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 1))
-        if col < 7:
-            if self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1])] is None:
-                moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1]))
-            elif self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1])].pieceColor != self.selected.pieceColor:
-                moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1]))
-        if col < 7 and row < 7:
+        if self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1])] is None:
+            moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1]))
+        elif self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1])].pieceColor != self.selected.pieceColor:
+            moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1]))
+        if row < 7:
             if self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 1)] is None:
                 moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 1))
             elif self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 1))
-        # Castling
+
+    def _castlingMoves(self, moves) -> list:
+        """
+        Returns a list of avaliable moves of the selected king.
+        """
         if self.selected.pieceColor == PieceColor.WHITE:
             # King side
             if (self.selected.piecePosition == ("E",1) and self.board["F",1] is None 
@@ -441,11 +473,13 @@ class ChessGame:
                 and self._castling[PieceColor.WHITE][PieceType.QUEEN]):
                 moves.append(("C",1))
         if self.selected.pieceColor == PieceColor.BLACK:
+            # King side
             if (self.selected.piecePosition == ("E",8) 
                 and self.board["F",8] is None 
                 and self.board["G",8] is None
                 and self._castling[PieceColor.BLACK][PieceType.KING]):
                 moves.append(("G",8))
+            # Queen side
             if (self.selected.piecePosition == ("E",8) 
                 and self.board["B",8] is None 
                 and self.board["C",8] is None 
@@ -453,3 +487,5 @@ class ChessGame:
                 and self._castling[PieceColor.BLACK][PieceType.QUEEN]):
                 moves.append(("C",8))
         return moves
+    ###
+    # End of king helper functions
