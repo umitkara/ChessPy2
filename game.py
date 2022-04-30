@@ -336,7 +336,7 @@ class ChessGame:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] - 1))
     ### 
     # End of Knight moves helper functions
-    # TODO: Shorten this function
+    
     def _avaliableBishopMoves(self) -> List[Tuple[str, int]]:
         """
         Returns a list of avaliable moves of the selected bishop.
@@ -344,6 +344,15 @@ class ChessGame:
         col = ord(self.selected.piecePosition[0].lower()) - ord("a")
         row = self.selected.piecePosition[1] - 1
         moves = []
+        self._bishopDownRightMoves(col, row, moves)
+        self._bishopUpLeftMoves(col, row, moves)
+        self._bishopUpRightMoves(col, row, moves)
+        self._bishopDownLeftMoves(col, row, moves)
+        return moves
+
+    # Bishop moves helper functions
+    ###
+    def _bishopDownRightMoves(self, col, row, moves):
         for i in range(1, 8):
             if col + i >= 8 or row + i >= 8:
                 break
@@ -354,6 +363,8 @@ class ChessGame:
                 break
             else:
                 break
+
+    def _bishopUpLeftMoves(self, col, row, moves):
         for i in range(1, 8):
             if col - i <= -1 or row + i >= 8:
                 break
@@ -364,6 +375,8 @@ class ChessGame:
                 break
             else:
                 break
+
+    def _bishopUpRightMoves(self, col, row, moves):
         for i in range(1, 8):
             if col + i >= 8 or row - i <= -1:
                 break
@@ -374,6 +387,8 @@ class ChessGame:
                 break
             else:
                 break
+
+    def _bishopDownLeftMoves(self, col, row, moves):
         for i in range(1, 8):
             if col - i <= -1 or row - i <= -1:
                 break
@@ -384,7 +399,8 @@ class ChessGame:
                 break
             else:
                 break
-        return moves
+    ###
+    # End of Bishop moves helper functions
     
     def _avaliableQueenMoves(self) -> List[Tuple[str, int]]:
         """
