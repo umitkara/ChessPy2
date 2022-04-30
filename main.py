@@ -1,6 +1,8 @@
 import pygame
 from game import ChessGame
 
+# TODO: Create tkinter GUI for side and level selection
+
 
 def main():
     chess = ChessGame()

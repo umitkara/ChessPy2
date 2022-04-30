@@ -273,7 +273,6 @@ class ChessGame:
                 break
         return moves
     
-    # TODO: Shorten this function
     def _avaliableKnightMoves(self) -> List[Tuple[str, int]]:
         """
         Returns a list of avaliable moves of the selected knight.
@@ -281,48 +280,62 @@ class ChessGame:
         col = ord(self.selected.piecePosition[0].lower()) - ord("a")
         row = self.selected.piecePosition[1] - 1
         moves = []
+        self._knightForwardMoves(col, row, moves)
+        self._knightRightMoves(col, row, moves)
+        self._knightBackMoves(col, row, moves)
+        self._knightLeftMoves(col, row, moves)
+        return moves
+    # Knight moves helper functions
+    ###
+    def _knightForwardMoves(self, col, row, moves):
         if col < 7 and row < 6:
             if self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 2)] is None:
                 moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 2))
             elif self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 2)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] + 2))
-        if col < 6 and row < 7:
-            if self.board[(chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] + 1)] is None:
-                moves.append((chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] + 1))
-            elif self.board[(chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
-                moves.append((chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] + 1))
-        if col < 7 and row > 1:
-            if self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 2)] is None:
-                moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 2))
-            elif self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 2)].pieceColor != self.selected.pieceColor:
-                moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 2))
-        if col < 6 and row > 0:
-            if self.board[(chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] - 1)] is None:
-                moves.append((chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] - 1))
-            elif self.board[(chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] - 1)].pieceColor != self.selected.pieceColor:
-                moves.append((chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] - 1))
         if col > 0 and row < 6:
             if self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 2)] is None:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 2))
             elif self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 2)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 2))
-        if col > 1 and row < 7:
-            if self.board[(chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] + 1)] is None:
-                moves.append((chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] + 1))
-            elif self.board[(chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
-                moves.append((chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] + 1))
+
+    def _knightRightMoves(self, col, row, moves):
+        if col < 6 and row < 7:
+            if self.board[(chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] + 1)] is None:
+                moves.append((chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] + 1))
+            elif self.board[(chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
+                moves.append((chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] + 1))
+        if col < 6 and row > 0:
+            if self.board[(chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] - 1)] is None:
+                moves.append((chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] - 1))
+            elif self.board[(chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] - 1)].pieceColor != self.selected.pieceColor:
+                moves.append((chr(ord(self.selected.piecePosition[0]) + 2), self.selected.piecePosition[1] - 1))
+
+    def _knightBackMoves(self, col, row, moves):
+        if col < 7 and row > 1:
+            if self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 2)] is None:
+                moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 2))
+            elif self.board[(chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 2)].pieceColor != self.selected.pieceColor:
+                moves.append((chr(ord(self.selected.piecePosition[0]) + 1), self.selected.piecePosition[1] - 2))
         if col > 0 and row > 1:
             if self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] - 2)] is None:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] - 2))
             elif self.board[(chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] - 2)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] - 2))
+
+    def _knightLeftMoves(self, col, row, moves):
+        if col > 1 and row < 7:
+            if self.board[(chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] + 1)] is None:
+                moves.append((chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] + 1))
+            elif self.board[(chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] + 1)].pieceColor != self.selected.pieceColor:
+                moves.append((chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] + 1))
         if col > 1 and row > 0:
             if self.board[(chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] - 1)] is None:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] - 1))
             elif self.board[(chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] - 1)].pieceColor != self.selected.pieceColor:
                 moves.append((chr(ord(self.selected.piecePosition[0]) - 2), self.selected.piecePosition[1] - 1))
-        return moves
-    
+    ### 
+    # End of Knight moves helper functions
     # TODO: Shorten this function
     def _avaliableBishopMoves(self) -> List[Tuple[str, int]]:
         """
