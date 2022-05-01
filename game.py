@@ -1,3 +1,5 @@
+from re import S
+from turtle import pos
 import pygame
 from sympy import re
 from piece import Piece, PieceColor, PieceType
@@ -84,42 +86,42 @@ class ChessGame:
     def _initWhites(self):
         row = 1 if self._playerColor == PieceColor.WHITE else 8
         pawnRow = 2 if self._playerColor == PieceColor.WHITE else 7
-        self.board[("A", 1)] = Piece(PieceType.ROOK, PieceColor.WHITE, ("A", row))
-        self.board[("B", 1)] = Piece(PieceType.KNIGHT, PieceColor.WHITE, ("B", row))
-        self.board[("C", 1)] = Piece(PieceType.BISHOP, PieceColor.WHITE, ("C", row))
-        self.board[("D", 1)] = Piece(PieceType.QUEEN, PieceColor.WHITE, ("D", row))
-        self.board[("E", 1)] = Piece(PieceType.KING, PieceColor.WHITE, ("E", row))
-        self.board[("F", 1)] = Piece(PieceType.BISHOP, PieceColor.WHITE, ("F", row))
-        self.board[("G", 1)] = Piece(PieceType.KNIGHT, PieceColor.WHITE, ("G", row))
-        self.board[("H", 1)] = Piece(PieceType.ROOK, PieceColor.WHITE, ("H", row))
-        self.board[("A", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("A", pawnRow))
-        self.board[("B", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("B", pawnRow))
-        self.board[("C", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("C", pawnRow))
-        self.board[("D", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("D", pawnRow))
-        self.board[("E", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("E", pawnRow))
-        self.board[("F", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("F", pawnRow))
-        self.board[("G", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("G", pawnRow))
-        self.board[("H", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("H", pawnRow))
+        self.board[("A", row)] = Piece(PieceType.ROOK, PieceColor.WHITE, ("A", row))
+        self.board[("B", row)] = Piece(PieceType.KNIGHT, PieceColor.WHITE, ("B", row))
+        self.board[("C", row)] = Piece(PieceType.BISHOP, PieceColor.WHITE, ("C", row))
+        self.board[("D", row)] = Piece(PieceType.QUEEN, PieceColor.WHITE, ("D", row))
+        self.board[("E", row)] = Piece(PieceType.KING, PieceColor.WHITE, ("E", row))
+        self.board[("F", row)] = Piece(PieceType.BISHOP, PieceColor.WHITE, ("F", row))
+        self.board[("G", row)] = Piece(PieceType.KNIGHT, PieceColor.WHITE, ("G", row))
+        self.board[("H", row)] = Piece(PieceType.ROOK, PieceColor.WHITE, ("H", row))
+        self.board[("A", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("A", pawnRow))
+        self.board[("B", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("B", pawnRow))
+        self.board[("C", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("C", pawnRow))
+        self.board[("D", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("D", pawnRow))
+        self.board[("E", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("E", pawnRow))
+        self.board[("F", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("F", pawnRow))
+        self.board[("G", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("G", pawnRow))
+        self.board[("H", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("H", pawnRow))
         
     def _initBlacks(self):
         row = 1 if self._playerColor == PieceColor.BLACK else 8
         pawnRow = 2 if self._playerColor == PieceColor.BLACK else 7
-        self.board[("A", 8)] = Piece(PieceType.ROOK, PieceColor.BLACK, ("A", row))
-        self.board[("B", 8)] = Piece(PieceType.KNIGHT, PieceColor.BLACK, ("B", row))
-        self.board[("C", 8)] = Piece(PieceType.BISHOP, PieceColor.BLACK, ("C", row))
-        self.board[("D", 8)] = Piece(PieceType.QUEEN, PieceColor.BLACK, ("D", row))
-        self.board[("E", 8)] = Piece(PieceType.KING, PieceColor.BLACK, ("E", row))
-        self.board[("F", 8)] = Piece(PieceType.BISHOP, PieceColor.BLACK, ("F", row))
-        self.board[("G", 8)] = Piece(PieceType.KNIGHT, PieceColor.BLACK, ("G", row))
-        self.board[("H", 8)] = Piece(PieceType.ROOK, PieceColor.BLACK, ("H", row))
-        self.board[("A", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("A", pawnRow))
-        self.board[("B", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("B", pawnRow))
-        self.board[("C", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("C", pawnRow))
-        self.board[("D", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("D", pawnRow))
-        self.board[("E", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("E", pawnRow))
-        self.board[("F", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("F", pawnRow))
-        self.board[("G", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("G", pawnRow))
-        self.board[("H", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("H", pawnRow))
+        self.board[("A", row)] = Piece(PieceType.ROOK, PieceColor.BLACK, ("A", row))
+        self.board[("B", row)] = Piece(PieceType.KNIGHT, PieceColor.BLACK, ("B", row))
+        self.board[("C", row)] = Piece(PieceType.BISHOP, PieceColor.BLACK, ("C", row))
+        self.board[("D", row)] = Piece(PieceType.QUEEN, PieceColor.BLACK, ("D", row))
+        self.board[("E", row)] = Piece(PieceType.KING, PieceColor.BLACK, ("E", row))
+        self.board[("F", row)] = Piece(PieceType.BISHOP, PieceColor.BLACK, ("F", row))
+        self.board[("G", row)] = Piece(PieceType.KNIGHT, PieceColor.BLACK, ("G", row))
+        self.board[("H", row)] = Piece(PieceType.ROOK, PieceColor.BLACK, ("H", row))
+        self.board[("A", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("A", pawnRow))
+        self.board[("B", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("B", pawnRow))
+        self.board[("C", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("C", pawnRow))
+        self.board[("D", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("D", pawnRow))
+        self.board[("E", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("E", pawnRow))
+        self.board[("F", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("F", pawnRow))
+        self.board[("G", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("G", pawnRow))
+        self.board[("H", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("H", pawnRow))
         
     def posToBoard(self, position: Tuple[int, int]) -> Tuple[str, int]:
         """
@@ -167,7 +169,6 @@ class ChessGame:
         """
         Moves the selected piece to the given position.
         """
-        # TODO: Implement Castling
         if self._selected is None:
             return
         oldPos = self._selected.piecePosition
@@ -176,13 +177,136 @@ class ChessGame:
             return
         if position not in availableMoves:
             return
+        isCastling = self._isCastlingMove(position, oldPos)
+        if isCastling:
+            temp = self.selected
+            if position == ("G", 1):
+                self.select(("H", 1))
+                self.selected.move(("F", 1))
+                self.board[("H", 1)] = None
+                self.board[("F", 1)] = self.selected
+                self.deselect()
+                self.selected = temp
+                self.board.moves.append(("O-O", self.selected.pieceColor))
+                self.castling[self.selected.pieceColor][PieceType.KING] = False
+            elif position == ("C", 1):
+                self.select(("A", 1))
+                self.selected.move(("D", 1))
+                self.board[("A", 1)] = None
+                self.board[("D", 1)] = self.selected
+                self.deselect()
+                self.selected = temp
+                self.board.moves.append(("O-O-O", self.selected.pieceColor))
+                self.castling[self.selected.pieceColor][PieceType.KING] = False
+            elif position == ("G", 8):
+                self.select(("H", 8))
+                self.selected.move(("F", 8))
+                self.board[("H", 8)] = None
+                self.board[("F", 8)] = self.selected
+                self.deselect()
+                self.selected = temp
+                self.board.moves.append(("O-O", self.selected.pieceColor))
+                self.castling[self.selected.pieceColor][PieceType.KING] = False
+            elif position == ("C", 8):
+                self.select(("A", 8))
+                self.selected.move(("D", 8))
+                self.board[("A", 8)] = None
+                self.board[("D", 8)] = self.selected
+                self.deselect()
+                self.selected = temp
+                self.board.moves.append(("O-O-O", self.selected.pieceColor))
+                self.castling[self.selected.pieceColor][PieceType.KING] = False
         if self.board.isOccupied(position):
             self.board.captured[self.selected.pieceColor.name].append(self.board[position])
             self.board[position].isCaptured = True
         self.board[self.selected.piecePosition] = None
         self._selected.move(position)
         self.board[position] = self._selected
-        self.board.moves.append((oldPos, position))
+        if not isCastling:
+            self.board.moves.append((oldPos, position))
+        
+    def _isCastlingMove(self, position: Tuple[str, int], oldPosition: Tuple[str, int]) -> bool:
+        """
+        Checks if the given position is a castling move.
+        """
+        if self.selected.pieceColor == self.playerColor:
+            return self._isCastlingMovePlayer(position, oldPosition)
+        else:
+            return self._isCastlingMoveComputer(position, oldPosition)
+
+    def _isCastlingMovePlayer(self, position: Tuple[str, int], oldPosition: Tuple[str, int]) -> bool:
+        """
+        Checks if the given position is a castling move for the player.
+        """
+        if self.selected.pieceType != PieceType.KING:
+            return False
+        if self.selected.isMoved:
+            return False
+        if position == ("G", 1):
+            if self.board[("H", 1)] is None:
+                return False
+            if self.board[("H", 1)].isMoved:
+                return False
+            if self.board[("H", 1)].pieceType != PieceType.ROOK:
+                return False
+            if self.board[("H", 1)].pieceColor != self.selected.pieceColor:
+                return False
+            if self.board[("H", 1)].piecePosition != ("H", 1):
+                return False
+            if self.board[("H", 1)].isCaptured:
+                return False
+            return True
+        elif position == ("C", 1):
+            if self.board[("A", 1)] is None:
+                return False
+            if self.board[("A", 1)].isMoved:
+                return False
+            if self.board[("A", 1)].pieceType != PieceType.ROOK:
+                return False
+            if self.board[("A", 1)].pieceColor != self.selected.pieceColor:
+                return False
+            if self.board[("A", 1)].piecePosition != ("A", 1):
+                return False
+            if self.board[("A", 1)].isCaptured:
+                return False
+            return True
+        
+    def _isCastlingMoveComputer(self, position: Tuple[str, int], oldPosition: Tuple[str, int]) -> bool:
+        """
+        Checks if the given position is a castling move for the computer.
+        """
+        if self.selected.pieceType != PieceType.KING:
+            return False
+        if self.selected.isMoved:
+            return False
+        if position == ("G", 8):
+            if self.board[("H", 8)] is None:
+                return False
+            if self.board[("H", 8)].isMoved:
+                return False
+            if self.board[("H", 8)].pieceType != PieceType.ROOK:
+                return False
+            if self.board[("H", 8)].pieceColor != self.selected.pieceColor:
+                return False
+            if self.board[("H", 8)].piecePosition != ("H", 8):
+                return False
+            if self.board[("H", 8)].isCaptured:
+                return False
+            return True
+        elif position == ("C", 8):
+            if self.board[("A", 8)] is None:
+                return False
+            if self.board[("A", 8)].isMoved:
+                return False
+            if self.board[("A", 8)].pieceType != PieceType.ROOK:
+                return False
+            if self.board[("A", 8)].pieceColor != self.selected.pieceColor:
+                return False
+            if self.board[("A", 8)].piecePosition != ("A", 8):
+                return False
+            if self.board[("A", 8)].isCaptured:
+                return False
+            return True
     
     def drag(self, screen: pygame.Surface, position: Tuple[int, int]) -> None:
         """
@@ -237,12 +361,12 @@ class ChessGame:
         """
         Returns a list of avaliable moves of the selected pawn.
         """
-        if self.selected.pieceColor == PieceColor.WHITE:
-            return self._avaliablePawnMovesWhite()
+        if self.selected.pieceColor == self.playerColor:
+            return self._avaliablePawnMovesPlayer()
         else:
-            return self._avaliablePawnMovesBlack()
+            return self._avaliablePawnMovesComputer()
     
-    def _avaliablePawnMovesWhite(self) -> List[Tuple[str, int]]:
+    def _avaliablePawnMovesPlayer(self) -> List[Tuple[str, int]]:
         """
         Returns a list of avaliable moves of the selected white pawn.
         """
@@ -261,7 +385,7 @@ class ChessGame:
             moves.append((chr(ord(self.selected.piecePosition[0]) - 1), self.selected.piecePosition[1] + 1))
         return moves
     
-    def _avaliablePawnMovesBlack(self) -> List[Tuple[str, int]]:
+    def _avaliablePawnMovesComputer(self) -> List[Tuple[str, int]]:
         """
         Returns a list of avaliable moves of the selected black pawn.
         """
@@ -524,7 +648,9 @@ class ChessGame:
         """
         Returns a list of avaliable moves of the selected king.
         """
-        if self.selected.pieceColor == PieceColor.WHITE:
+        if self.selected.isMoved:
+            return moves
+        if self.selected.pieceColor == self.playerColor:
             # King side
             if (self.selected.piecePosition == ("E",1) and self.board["F",1] is None 
                 and self.board["G",1] is None 
@@ -536,7 +662,7 @@ class ChessGame:
                 and self.board["D",1] is None 
                 and self._castling[PieceColor.WHITE][PieceType.QUEEN]):
                 moves.append(("C",1))
-        if self.selected.pieceColor == PieceColor.BLACK:
+        if self.selected.pieceColor != self.playerColor:
             # King side
             if (self.selected.piecePosition == ("E",8) 
                 and self.board["F",8] is None 

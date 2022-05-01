@@ -56,7 +56,7 @@ class LevelSelection:
         self.root.quit()
         self.root.destroy()
 
-
+# TODO: Shorten this function
 def main():
     global pColor, cLevel
     chess = ChessGame(pColor, cLevel)
@@ -114,6 +114,9 @@ def main():
     
 if __name__ == "__main__":
     root = tk.Tk()
+    SCREEN_WIDTH = root.winfo_screenwidth()
+    SCREE_HEIGHT = root.winfo_screenheight()
+    root.geometry(f"+{SCREEN_WIDTH//2 - 200}+{SCREE_HEIGHT//2 - 200}")
     app = LevelSelection(root)
     app.run()
     main()
