@@ -6,7 +6,8 @@ from PIL import Image, ImageTk
 
 from piece import PieceColor
 
-# TODO: Create tkinter GUI for side and level selection
+pColor = PieceColor.WHITE
+cLevel = 1
 
 class LevelSelection:
     def __init__(self, master=None):
@@ -34,23 +35,31 @@ class LevelSelection:
         self.scale1.grid(column="0", columnspan="2", row="1")
         self.frame1.configure(height="200", padx="50", pady="50", width="200")
         self.frame1.pack(side="top")
-
         # Main widget
         self.mainwindow = self.frame1
+        self.root = master
         
     def run(self):
         self.mainwindow.mainloop()
         
-    # TODO: Instead of returning, call function with args
     def whitesClicked(self):
-        return PieceColor.WHITE, self.scale1.get()
+        global pColor, cLevel
+        pColor = PieceColor.WHITE
+        cLevel = self.scale1.get()
+        self.root.quit()
+        self.root.destroy()
     
     def blacksClicked(self):
-        return PieceColor.BLACK, self.scale1.get()
+        global pColor, cLevel
+        pColor = PieceColor.BLACK
+        cLevel = self.scale1.get()
+        self.root.quit()
+        self.root.destroy()
 
 
 def main():
-    chess = ChessGame()
+    global pColor, cLevel
+    chess = ChessGame(pColor, cLevel)
     pygame.init()
     icon = pygame.image.load("pieces/white/king.png")
     icon = pygame.transform.scale(icon, (64, 64))

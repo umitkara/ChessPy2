@@ -6,10 +6,10 @@ from typing import List, Tuple, Optional, Dict
 
 
 class ChessGame:
-    def __init__(self):
+    def __init__(self, playerColor: PieceColor, computerLevel: int):
         self._board = ChessBoard()
-        self._playerColor = PieceColor.WHITE
-        self._computerLevel = 1
+        self._playerColor = playerColor
+        self._computerLevel = computerLevel
         self._initWhites()
         self._initBlacks()
         self._selected = None
