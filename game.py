@@ -4,12 +4,12 @@ from piece import Piece, PieceColor, PieceType
 from board import ChessBoard
 from typing import List, Tuple, Optional, Dict
 
-# TODO: Init pieces by choosen side.
 
 class ChessGame:
     def __init__(self):
         self._board = ChessBoard()
         self._playerColor = PieceColor.WHITE
+        self._computerLevel = 1
         self._initWhites()
         self._initBlacks()
         self._selected = None
@@ -66,6 +66,20 @@ class ChessGame:
         """
         self._playerColor = color
         self.reset()
+    
+    @property
+    def computerLevel(self) -> int:
+        """
+        Returns the computer level.
+        """
+        return self._computerLevel
+    
+    @computerLevel.setter
+    def computerLevel(self, level: int):
+        """
+        Sets the computer level.
+        """
+        self._computerLevel = level
     
     def _initWhites(self):
         row = 1 if self._playerColor == PieceColor.WHITE else 8

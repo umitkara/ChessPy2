@@ -1,8 +1,52 @@
 import pygame
 from game import ChessGame
+import pathlib
+import tkinter as tk
+from PIL import Image, ImageTk
+
+from piece import PieceColor
 
 # TODO: Create tkinter GUI for side and level selection
-# TODO: Implement side selection
+
+class LevelSelection:
+    def __init__(self, master=None):
+        whitesImage = Image.open(pathlib.Path(__file__).parent.absolute() / "pieces" / "white" / "king.png")
+        whitesImage = whitesImage.convert("RGBA")
+        whitesImage = whitesImage.resize((100, 100), Image.ANTIALIAS)
+        blackImage = Image.open(pathlib.Path(__file__).parent.absolute() / "pieces" / "black" / "king.png")
+        blackImage= blackImage.convert("RGBA")
+        blackImage= blackImage.resize((100, 100), Image.ANTIALIAS)
+        self.frame1 = tk.Frame(master)
+        self.selectWhites = tk.Button(self.frame1)
+        self.img_king = ImageTk.PhotoImage(whitesImage)
+        self.selectWhites.configure(image=self.img_king, command=self.whitesClicked)
+        self.selectWhites.grid(column="0", row="0")
+        self.selectBlacks = tk.Button(self.frame1)
+        self.img_queen = ImageTk.PhotoImage(blackImage)
+        self.selectBlacks.configure(image=self.img_queen, command=self.blacksClicked)
+        self.selectBlacks.grid(column="1", row="0")
+        self.scale1 = tk.Scale(self.frame1)
+        self.scale1.configure(bigincrement="1", digits="1", from_="1", label="Level")
+        self.scale1.configure(
+            orient="horizontal", resolution="0.0", showvalue="true", sliderlength="10"
+        )
+        self.scale1.configure(tickinterval="1.0", to="10")
+        self.scale1.grid(column="0", columnspan="2", row="1")
+        self.frame1.configure(height="200", padx="50", pady="50", width="200")
+        self.frame1.pack(side="top")
+
+        # Main widget
+        self.mainwindow = self.frame1
+        
+    def run(self):
+        self.mainwindow.mainloop()
+        
+    # TODO: Instead of returning, call function with args
+    def whitesClicked(self):
+        return PieceColor.WHITE, self.scale1.get()
+    
+    def blacksClicked(self):
+        return PieceColor.BLACK, self.scale1.get()
 
 
 def main():
@@ -60,4 +104,7 @@ def main():
                     pygame.display.flip()
     
 if __name__ == "__main__":
+    root = tk.Tk()
+    app = LevelSelection(root)
+    app.run()
     main()
