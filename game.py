@@ -4,10 +4,12 @@ from piece import Piece, PieceColor, PieceType
 from board import ChessBoard
 from typing import List, Tuple, Optional, Dict
 
+# TODO: Init pieces by choosen side.
 
 class ChessGame:
     def __init__(self):
         self._board = ChessBoard()
+        self._playerColor = PieceColor.WHITE
         self._initWhites()
         self._initBlacks()
         self._selected = None
@@ -50,41 +52,60 @@ class ChessGame:
         """
         return self._castling
     
+    @property
+    def playerColor(self) -> PieceColor:
+        """
+        Returns the player color.
+        """
+        return self._playerColor
+    
+    @playerColor.setter
+    def playerColor(self, color: PieceColor):
+        """
+        Sets the player color.
+        """
+        self._playerColor = color
+        self.reset()
+    
     def _initWhites(self):
-        self.board[("A", 1)] = Piece(PieceType.ROOK, PieceColor.WHITE, ("A", 1))
-        self.board[("B", 1)] = Piece(PieceType.KNIGHT, PieceColor.WHITE, ("B", 1))
-        self.board[("C", 1)] = Piece(PieceType.BISHOP, PieceColor.WHITE, ("C", 1))
-        self.board[("D", 1)] = Piece(PieceType.QUEEN, PieceColor.WHITE, ("D", 1))
-        self.board[("E", 1)] = Piece(PieceType.KING, PieceColor.WHITE, ("E", 1))
-        self.board[("F", 1)] = Piece(PieceType.BISHOP, PieceColor.WHITE, ("F", 1))
-        self.board[("G", 1)] = Piece(PieceType.KNIGHT, PieceColor.WHITE, ("G", 1))
-        self.board[("H", 1)] = Piece(PieceType.ROOK, PieceColor.WHITE, ("H", 1))
-        self.board[("A", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("A", 2))
-        self.board[("B", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("B", 2))
-        self.board[("C", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("C", 2))
-        self.board[("D", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("D", 2))
-        self.board[("E", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("E", 2))
-        self.board[("F", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("F", 2))
-        self.board[("G", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("G", 2))
-        self.board[("H", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("H", 2))
+        row = 1 if self._playerColor == PieceColor.WHITE else 8
+        pawnRow = 2 if self._playerColor == PieceColor.WHITE else 7
+        self.board[("A", 1)] = Piece(PieceType.ROOK, PieceColor.WHITE, ("A", row))
+        self.board[("B", 1)] = Piece(PieceType.KNIGHT, PieceColor.WHITE, ("B", row))
+        self.board[("C", 1)] = Piece(PieceType.BISHOP, PieceColor.WHITE, ("C", row))
+        self.board[("D", 1)] = Piece(PieceType.QUEEN, PieceColor.WHITE, ("D", row))
+        self.board[("E", 1)] = Piece(PieceType.KING, PieceColor.WHITE, ("E", row))
+        self.board[("F", 1)] = Piece(PieceType.BISHOP, PieceColor.WHITE, ("F", row))
+        self.board[("G", 1)] = Piece(PieceType.KNIGHT, PieceColor.WHITE, ("G", row))
+        self.board[("H", 1)] = Piece(PieceType.ROOK, PieceColor.WHITE, ("H", row))
+        self.board[("A", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("A", pawnRow))
+        self.board[("B", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("B", pawnRow))
+        self.board[("C", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("C", pawnRow))
+        self.board[("D", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("D", pawnRow))
+        self.board[("E", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("E", pawnRow))
+        self.board[("F", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("F", pawnRow))
+        self.board[("G", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("G", pawnRow))
+        self.board[("H", 2)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("H", pawnRow))
         
     def _initBlacks(self):
-        self.board[("A", 8)] = Piece(PieceType.ROOK, PieceColor.BLACK, ("A", 8))
-        self.board[("B", 8)] = Piece(PieceType.KNIGHT, PieceColor.BLACK, ("B", 8))
-        self.board[("C", 8)] = Piece(PieceType.BISHOP, PieceColor.BLACK, ("C", 8))
-        self.board[("D", 8)] = Piece(PieceType.QUEEN, PieceColor.BLACK, ("D", 8))
-        self.board[("E", 8)] = Piece(PieceType.KING, PieceColor.BLACK, ("E", 8))
-        self.board[("F", 8)] = Piece(PieceType.BISHOP, PieceColor.BLACK, ("F", 8))
-        self.board[("G", 8)] = Piece(PieceType.KNIGHT, PieceColor.BLACK, ("G", 8))
-        self.board[("H", 8)] = Piece(PieceType.ROOK, PieceColor.BLACK, ("H", 8))
-        self.board[("A", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("A", 7))
-        self.board[("B", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("B", 7))
-        self.board[("C", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("C", 7))
-        self.board[("D", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("D", 7))
-        self.board[("E", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("E", 7))
-        self.board[("F", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("F", 7))
-        self.board[("G", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("G", 7))
-        self.board[("H", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("H", 7))
+        row = 1 if self._playerColor == PieceColor.BLACK else 8
+        pawnRow = 2 if self._playerColor == PieceColor.BLACK else 7
+        self.board[("A", 8)] = Piece(PieceType.ROOK, PieceColor.BLACK, ("A", row))
+        self.board[("B", 8)] = Piece(PieceType.KNIGHT, PieceColor.BLACK, ("B", row))
+        self.board[("C", 8)] = Piece(PieceType.BISHOP, PieceColor.BLACK, ("C", row))
+        self.board[("D", 8)] = Piece(PieceType.QUEEN, PieceColor.BLACK, ("D", row))
+        self.board[("E", 8)] = Piece(PieceType.KING, PieceColor.BLACK, ("E", row))
+        self.board[("F", 8)] = Piece(PieceType.BISHOP, PieceColor.BLACK, ("F", row))
+        self.board[("G", 8)] = Piece(PieceType.KNIGHT, PieceColor.BLACK, ("G", row))
+        self.board[("H", 8)] = Piece(PieceType.ROOK, PieceColor.BLACK, ("H", row))
+        self.board[("A", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("A", pawnRow))
+        self.board[("B", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("B", pawnRow))
+        self.board[("C", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("C", pawnRow))
+        self.board[("D", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("D", pawnRow))
+        self.board[("E", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("E", pawnRow))
+        self.board[("F", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("F", pawnRow))
+        self.board[("G", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("G", pawnRow))
+        self.board[("H", 7)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("H", pawnRow))
         
     def posToBoard(self, position: Tuple[int, int]) -> Tuple[str, int]:
         """
