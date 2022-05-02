@@ -1,11 +1,9 @@
-from re import S
-from turtle import pos
 import pygame
-from sympy import re
 from piece import Piece, PieceColor, PieceType
 from board import ChessBoard
 from typing import List, Tuple, Optional, Dict
 
+# TODO: Implement computer player as stockfish with stockfishpy module
 
 class ChessGame:
     def __init__(self, playerColor: PieceColor, computerLevel: int):
@@ -18,6 +16,8 @@ class ChessGame:
         self._turn = PieceColor.WHITE
         self._castling = {PieceColor.WHITE: { PieceType.KING: True, PieceType.QUEEN: True }, 
                           PieceColor.BLACK: { PieceType.KING: True, PieceType.QUEEN: True }}
+        self._kingPos = {PieceColor.WHITE: (None, None), PieceColor.BLACK: (None, None)}
+        self._checkMoves = [] # List of moves that are in check
         
     @property
     def board(self) -> ChessBoard:
@@ -82,6 +82,34 @@ class ChessGame:
         Sets the computer level.
         """
         self._computerLevel = level
+        
+    @property
+    def checkMoves(self) -> List[Tuple[str, str]]:
+        """
+        Returns the moves that are in check.
+        """
+        return self._checkMoves
+    
+    @checkMoves.setter
+    def checkMoves(self, moves: List[Tuple[str, str]]):
+        """
+        Sets the moves that are in check.
+        """
+        self._checkMoves = moves
+        
+    @property
+    def kingPositions(self) -> Dict[PieceColor, Tuple[str, int]]:
+        """
+        Returns the king positions.
+        """
+        return self._kingPos
+    
+    @kingPositions.setter
+    def kingPositions(self, positions: Dict[PieceColor, Tuple[str, int]]):
+        """
+        Sets the king positions.
+        """
+        self._kingPos = positions
     
     def _initWhites(self):
         row = 1 if self._playerColor == PieceColor.WHITE else 8
@@ -102,6 +130,8 @@ class ChessGame:
         self.board[("F", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("F", pawnRow))
         self.board[("G", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("G", pawnRow))
         self.board[("H", pawnRow)] = Piece(PieceType.PAWN, PieceColor.WHITE, ("H", pawnRow))
+        self.kingPositions[PieceColor.WHITE] = ("E", row)
+        
         
     def _initBlacks(self):
         row = 1 if self._playerColor == PieceColor.BLACK else 8
@@ -122,6 +152,7 @@ class ChessGame:
         self.board[("F", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("F", pawnRow))
         self.board[("G", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("G", pawnRow))
         self.board[("H", pawnRow)] = Piece(PieceType.PAWN, PieceColor.BLACK, ("H", pawnRow))
+        self.kingPositions[PieceColor.BLACK] = ("E", row)
         
     def posToBoard(self, position: Tuple[int, int]) -> Tuple[str, int]:
         """
@@ -335,7 +366,8 @@ class ChessGame:
             self._turn = PieceColor.BLACK
         else:
             self._turn = PieceColor.WHITE
-            
+    
+    # TODO: Check if current position is check. If it is prune the moves that are not valid.
     def avaliableMoves(self) -> List[Tuple[str, int]]:
         """
         Returns a list of avaliable moves of the selected piece.
@@ -413,21 +445,33 @@ class ChessGame:
         for i in range(self.selected.piecePosition[1] + 1, 8):
             if self.board[(self.selected.piecePosition[0], i)] is None:
                 moves.append((self.selected.piecePosition[0], i))
+            elif self.board[(self.selected.piecePosition[0], i)].pieceColor != self.selected.pieceColor:
+                moves.append((self.selected.piecePosition[0], i))
+                break
             else:
                 break
         for i in range(self.selected.piecePosition[1] - 1, -1, -1):
             if self.board[(self.selected.piecePosition[0], i)] is None:
                 moves.append((self.selected.piecePosition[0], i))
+            elif self.board[(self.selected.piecePosition[0], i)].pieceColor != self.selected.pieceColor:
+                moves.append((self.selected.piecePosition[0], i))
+                break
             else:
                 break
         for i in range(col + 1, 8):
             if self.board[(chr(i + ord("a")), self.selected.piecePosition[1])] is None:
                 moves.append((chr(i + ord("A")), self.selected.piecePosition[1]))
+            elif self.board[(chr(i + ord("a")), self.selected.piecePosition[1])].pieceColor != self.selected.pieceColor:
+                moves.append((self.selected.piecePosition[0], i))
+                break
             else:
                 break
         for i in range(col - 1, -1, -1):
             if self.board[(chr(i + ord("a")), self.selected.piecePosition[1])] is None:
                 moves.append((chr(i + ord("A")), self.selected.piecePosition[1]))
+            elif self.board[(chr(i + ord("a")), self.selected.piecePosition[1])].pieceColor != self.selected.pieceColor:
+                moves.append((self.selected.piecePosition[0], i))
+                break
             else:
                 break
         return moves

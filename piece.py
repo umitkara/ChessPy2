@@ -191,6 +191,7 @@ class Piece:
         self._isMoved = True
         self.pieceMoves.append(newPosition)
     
+    # TODO: Implement is checked.
     def draw(self, screen: pygame.Surface) -> None:
         """
         Draws the piece on the screen.

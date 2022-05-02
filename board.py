@@ -3,6 +3,8 @@ from typing import List, Tuple, Optional, Iterable
 import pygame
 from piece import Piece, PieceColor, PieceType
 
+# TODO: Implement PGN notation
+
 class ChessBoard:
     def __init__(self) -> None:
         self._board = [[None for _ in range(8)] for _ in range(8)]
